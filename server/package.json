@@ -12,6 +12,7 @@
   "author": "Victor Vasconcelos",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "fastify": "^4.26.1"
   }
 }
