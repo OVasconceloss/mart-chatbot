@@ -1,18 +1,18 @@
 import createOpenAIMessage from "../services/openaiService.js";
 
-export default async function fastifyRoutes (fastify) {
+export default async function fastifyRoutes(fastify) {
 
     //ROUTE TO SEND THE USER'S MESSAGE TO THE OPENAI API
-    fastify.get('/:userMessage', async (request, response) => {
-        let previousMessages = [];
-        const { userMessage } = request.params;
+    fastify.post('/mart', async (request, response) => {
+        const { userMessage, previousMessages } = request.body;
 
         try {
-            const chatMessage = await createOpenAIMessage(userMessage, previousMessages);
-            response.code(200).send({status: 200});
+            const { response: responseChat, messages } = await createOpenAIMessage(userMessage, previousMessages);
+            
+            return { response: responseChat.choices[0], messages };
         } catch (requestError) {
-            console.log(`${requestError}`);
-            response.send({error: requestError});
+            console.log(`An error occurred while trying to receive the OpenAI API message: ${requestError}`);
+            return requestError;
         }
     });
 };
