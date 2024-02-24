@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "A chatbot developed with the OpenAI API, ReacJS, NodeJs and Tailwind CSS.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch --no-warnings index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Victor Vasconcelos",
