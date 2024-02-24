@@ -2,24 +2,30 @@ import OpenAI from "openai";
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-const openai = new OpenAI();
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 
 const createOpenAIMessage = async (userMessage, previousMessages = []) => {
-    const allMessages = [
-        {"role": "system", "content": "You pretend to be named M.A.R.T (Machine Assistant for Resolve Tasks)"},
-        {"role": "system", "content": `You're a very good helper and conversationalist. You are a very good helper and conversationalist, expert in any topic related to technology, physics, chemistry and mathematics.`},
-        ... previousMessages,
-        {"role": "user","content": userMessage,}
+    const messages = [
+        {"role": "system", "content": `You are a helpful assistant`},
+        {"role": "user", "content": userMessage},
+        ...previousMessages
     ];
 
-    const completion = await openai.chat.completions.create({
+    const chatCompletion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
-        messages: allMessages,
+        messages: messages,
     });
-    
-    const chatResponse = completion.choices[0];
 
-    return { allMessages, chatResponse };
+    const allMessages = messages.concat(chatCompletion.choices[0].message);
+
+    const responseWithHistory = {
+        response: chatCompletion,
+        messages: allMessages,
+    };
+
+    return responseWithHistory;
 }
 
 export default createOpenAIMessage;
