@@ -9,9 +9,9 @@ const Home = () => {
     const [messageHistory, setMessageHistory] = useState([]);
 
     const handleSendMessage = async (userMessage) => {
+        setUserMessage('');
         try {
             const responseAPI = await sendMessage(userMessage, setUserMessage, messageHistory, setMessageHistory);
-
             setAllMessages(responseAPI.messages);
         } catch (error) {
             console.log(`Error sending request to API: ${error}`);
@@ -59,7 +59,6 @@ const Home = () => {
                 </div>
                 <div id="messages" className="flex-grow overflow-y-auto m-10">
                     {allMessages?.map((message, index) => (
-                        console.log(message),
                         <div key={index}>
                             {message.role === 'user' ? (
                                 <MessageUser userMessage={message.content} />
@@ -72,6 +71,7 @@ const Home = () => {
                 <div id="user-input" className="flex items-center justify-center w-full">
                     <input 
                         type="text"
+                        value={userMessage}
                         placeholder="Message Mart Chatbot"
                         onChange={(event) => setUserMessage(event.target.value)}
                         className="w-[46rem] my-5 p-2 bg-zinc-700 outline-none border border-zinc-700 rounded-md text-zinc-100
