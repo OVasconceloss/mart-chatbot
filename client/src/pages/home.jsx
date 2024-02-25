@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { sendMessage } from "../api/requestsAPI";
+import { MessageUser } from "../components/messages/messageUser";
+import { MessageChat } from "../components/messages/messageChat";
 
 const Home = () => {
     const [userMessage, setUserMessage] = useState();
@@ -56,46 +58,16 @@ const Home = () => {
                     </div>
                 </div>
                 <div id="messages" className="flex-grow overflow-y-auto m-10">
-                    <div id="message-user" className="flex items-start p-10 gap-3">
-                        <img 
-                            src="https://github.com/OVasconceloss.png" 
-                            alt="Profile Picture"
-                            className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <div>
-                            <h4 className="text-lg text-zinc-100">User Name</h4>
-                            <p className="py-2 text-zinc-100 text-justify">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                                Laboriosam eum natus consectetur incidunt fugit aut eaque ex, 
-                                quas odio perferendis minus dolorum eligendi quasi amet sapiente 
-                                nisi qui minima eveniet!
-                            </p>
+                    {allMessages?.map((message, index) => (
+                        console.log(message),
+                        <div key={index}>
+                            {message.role === 'user' ? (
+                                <MessageUser userMessage={message.content} />
+                            ) : (
+                                <MessageChat chatMessage={message.content} />
+                            )}
                         </div>
-                    </div>
-                    <div id="message-mart" className="flex items-start p-10 gap-3">
-                        <img 
-                            src="https://github.com/rocketseat.png" 
-                            alt="Profile Picture"
-                            className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <div>
-                            <h4 className="text-lg text-zinc-100">M.A.R.T</h4>
-                            <p className="py-2 text-zinc-100 text-justify">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                                Laboriosam eum natus consectetur incidunt fugit aut eaque ex, 
-                                quas odio perferendis minus dolorum eligendi quasi amet sapiente 
-                                nisi qui minima eveniet!
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                                Laboriosam eum natus consectetur incidunt fugit aut eaque ex, 
-                                quas odio perferendis minus dolorum eligendi quasi amet sapiente 
-                                nisi qui minima eveniet!
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                                Laboriosam eum natus consectetur incidunt fugit aut eaque ex, 
-                                quas odio perferendis minus dolorum eligendi quasi amet sapiente 
-                                nisi qui minima eveniet!
-                            </p>
-                        </div>
-                    </div>
+                    ))}
                 </div>
                 <div id="user-input" className="flex items-center justify-center w-full">
                     <input 
