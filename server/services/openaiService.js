@@ -6,11 +6,11 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-const createOpenAIMessage = async (userMessage, previousMessages = []) => {
+const createOpenAIMessage = async (userMessage, messageHistory) => {
     const messages = [
         {"role": "system", "content": `You are a helpful assistant`},
         {"role": "user", "content": userMessage},
-        ...previousMessages
+        ...messageHistory
     ];
 
     const chatCompletion = await openai.chat.completions.create({
@@ -18,14 +18,14 @@ const createOpenAIMessage = async (userMessage, previousMessages = []) => {
         messages: messages,
     });
 
-    const allMessages = messages.concat(chatCompletion.choices[0].message);
+    const responseMessage = chatCompletion.choices[0].message;
+    
+    messageHistory.push(responseMessage);
 
-    const responseWithHistory = {
-        response: chatCompletion,
-        messages: allMessages,
+    return {
+        response: responseMessage,
+        messages: messages
     };
-
-    return responseWithHistory;
 }
 
 export default createOpenAIMessage;
