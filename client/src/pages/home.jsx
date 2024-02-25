@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { sendMessage } from "../api/requestsAPI";
 import { MessageUser } from "../components/messages/messageUser";
 import { MessageChat } from "../components/messages/messageChat";
 
 const Home = () => {
+    const messageEndReference = useRef(null);
     const [userMessage, setUserMessage] = useState();
     const [allMessages, setAllMessages] = useState([]);
     const [messageHistory, setMessageHistory] = useState([]);
@@ -17,6 +18,12 @@ const Home = () => {
             console.log(`Error sending request to API: ${error}`);
         }
     };
+
+    const scrollToBottom = () => messageEndReference.current?.scrollIntoView({ behavior: 'smooth' });
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [allMessages]);
 
     return (
         <>
@@ -67,6 +74,7 @@ const Home = () => {
                             )}
                         </div>
                     ))}
+                    <div ref={messageEndReference}></div>
                 </div>
                 <div id="user-input" className="flex items-center justify-center w-full">
                     <input 
