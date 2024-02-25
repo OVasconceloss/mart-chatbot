@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
 import { sendMessage } from "../api/requestsAPI";
+import { useEffect, useRef, useState } from "react";
 import { MessageUser } from "../components/messages/messageUser";
 import { MessageChat } from "../components/messages/messageChat";
 
@@ -13,7 +13,11 @@ const Home = () => {
         setUserMessage('');
         try {
             const responseAPI = await sendMessage(userMessage, setUserMessage, messageHistory, setMessageHistory);
-            setAllMessages(responseAPI.messages);
+            const updatedMessages = responseAPI.messages.map((message, index) => ({
+                ...message,
+                isLatest: index === responseAPI.messages.length - 1
+            }));
+            setAllMessages(updatedMessages);
         } catch (error) {
             console.log(`Error sending request to API: ${error}`);
         }
@@ -70,7 +74,7 @@ const Home = () => {
                             {message.role === 'user' ? (
                                 <MessageUser userMessage={message.content} />
                             ) : (
-                                <MessageChat chatMessage={message.content} />
+                                <MessageChat chatMessage={message.content} isLatest={message.isLatest} />
                             )}
                         </div>
                     ))}
