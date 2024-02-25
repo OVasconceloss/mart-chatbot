@@ -7,24 +7,23 @@ const openai = new OpenAI({
 });
 
 const createOpenAIMessage = async (userMessage, messageHistory) => {
-    const messages = [
-        {"role": "system", "content": `You are a helpful assistant`},
+    const updatedHistory = messageHistory.concat([
         {"role": "user", "content": userMessage},
-        ...messageHistory
-    ];
+        {"role": "assistant", "content": ""}
+    ]);
 
     const chatCompletion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
-        messages: messages,
+        messages: updatedHistory,
     });
 
-    const responseMessage = chatCompletion.choices[0].message;
-    
-    messageHistory.push(responseMessage);
+    const responseMessage = chatCompletion.choices[0].message.content;
+
+    updatedHistory[updatedHistory.length - 1].content = responseMessage;
 
     return {
         response: responseMessage,
-        messages: messages
+        messages: updatedHistory
     };
 }
 
