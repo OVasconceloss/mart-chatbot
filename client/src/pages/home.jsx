@@ -5,11 +5,13 @@ import { MessageChat } from "../components/messages/messageChat";
 
 const Home = () => {
     const messageEndReference = useRef(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [userMessage, setUserMessage] = useState('');
     const [allMessages, setAllMessages] = useState([]);
     const [messageHistory, setMessageHistory] = useState([]);
 
     const handleSendMessage = async (userMessage) => {
+        setIsLoading(true);
         setUserMessage('');
         try {
             const responseAPI = await sendMessage(userMessage, setUserMessage, messageHistory, setMessageHistory);
@@ -20,6 +22,8 @@ const Home = () => {
             setAllMessages(updatedMessages);
         } catch (error) {
             console.log(`Error sending request to API: ${error}`);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -33,6 +37,11 @@ const Home = () => {
 
     useEffect(() => {
         scrollToBottom();
+        const loadingTimer = setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
+      
+          return () => clearTimeout(loadingTimer);
     }, [allMessages]);
 
     return (
@@ -80,10 +89,27 @@ const Home = () => {
                             {message.role === 'user' ? (
                                 <MessageUser userMessage={message.content} />
                             ) : (
-                                <MessageChat chatMessage={message.content} isLatest={message.isLatest} />
+                                <MessageChat chatMessage={message.content} isLatest={message.isLatest}/>
                             )}
                         </div>
                     ))}
+                    {isLoading &&
+                        <div id="message-mart" className="flex items-start p-10 gap-3">
+                            <img 
+                                src="https://github.com/rocketseat.png" 
+                                alt="Profile Picture"
+                                className="w-10 h-10 rounded-full object-cover"
+                            />
+                            <div>
+                                <h4 className="text-lg text-zinc-100">M.A.R.T</h4>
+                                <div className="flex items-center justify-center mt-2">
+                                    <div className="h-3 w-3 bg-zinc-300 mr-3 rounded-full animate-pulse"></div>
+                                    <div className="h-3 w-3 bg-zinc-300 mr-3 rounded-full animate-pulse"></div>
+                                    <div className="h-3 w-3 bg-zinc-300 rounded-full animate-pulse"></div>
+                                </div>
+                            </div>
+                        </div>                    
+                    }
                     <div ref={messageEndReference}></div>
                 </div>
                 <div id="user-input" className="flex items-center justify-center w-full">
