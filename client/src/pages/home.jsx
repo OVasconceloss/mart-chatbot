@@ -1,4 +1,21 @@
+import { useState } from "react";
+import { sendMessage } from "../api/requestsAPI";
+
 const Home = () => {
+    const [userMessage, setUserMessage] = useState();
+    const [allMessages, setAllMessages] = useState([]);
+    const [messageHistory, setMessageHistory] = useState([]);
+
+    const handleSendMessage = async (userMessage) => {
+        try {
+            const responseAPI = await sendMessage(userMessage, setUserMessage, messageHistory, setMessageHistory);
+
+            setAllMessages(responseAPI.messages);
+        } catch (error) {
+            console.log(`Error sending request to API: ${error}`);
+        }
+    };
+
     return (
         <>
         <main className="flex justify-between h-screen bg-zinc-800">
@@ -84,11 +101,15 @@ const Home = () => {
                     <input 
                         type="text"
                         placeholder="Message Mart Chatbot"
+                        onChange={(event) => setUserMessage(event.target.value)}
                         className="w-[46rem] my-5 p-2 bg-zinc-700 outline-none border border-zinc-700 rounded-md text-zinc-100
                         transition ease-linear focus:border-zinc-100"
                     />
-                    <button className="w-10 mx-2 p-2 bg-zinc-700 rounded-md text-zinc-100
-                    transition ease-linear hover:bg-zinc-100 hover:text-zinc-700">
+                    <button
+                        onClick={() => handleSendMessage(userMessage)}
+                        className="w-10 mx-2 p-2 bg-zinc-700 rounded-md text-zinc-100
+                        transition ease-linear hover:bg-zinc-100 hover:text-zinc-700"
+                    >
                         <i className="fa-solid fa-paper-plane"></i>
                     </button>
                 </div>
