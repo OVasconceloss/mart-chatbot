@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { sendMessage } from "../api/requestsAPI";
 import { useEffect, useRef, useState } from "react";
 import { MessageUser } from "../components/messages/messageUser";
@@ -22,8 +23,6 @@ const Home = () => {
             setAllMessages(updatedMessages);
         } catch (error) {
             console.log(`Error sending request to API: ${error}`);
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -33,16 +32,22 @@ const Home = () => {
         }
     }
 
-    const scrollToBottom = () => messageEndReference.current?.scrollIntoView({ behavior: 'smooth' });
-
+    const scrollToBottom = () => {
+        console.log("isLoading:", isLoading);
+        console.log("messageEndReference.current:", messageEndReference.current);
+        if (!isLoading && messageEndReference.current) {
+            messageEndReference.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+    
     useEffect(() => {
-        scrollToBottom();
         const loadingTimer = setTimeout(() => {
             setIsLoading(false);
           }, 2000);
+          scrollToBottom();
       
           return () => clearTimeout(loadingTimer);
-    }, [allMessages]);
+    }, [allMessages, isLoading]);
 
     return (
         <>
@@ -108,9 +113,9 @@ const Home = () => {
                                     <div className="h-3 w-3 bg-zinc-300 rounded-full animate-pulse"></div>
                                 </div>
                             </div>
-                        </div>                    
+                        </div>
                     }
-                    <div ref={messageEndReference}></div>
+                <div ref={messageEndReference}></div>
                 </div>
                 <div id="user-input" className="flex items-center justify-center w-full">
                     <input 
