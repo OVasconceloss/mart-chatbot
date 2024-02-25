@@ -5,7 +5,7 @@ import { MessageChat } from "../components/messages/messageChat";
 
 const Home = () => {
     const messageEndReference = useRef(null);
-    const [userMessage, setUserMessage] = useState();
+    const [userMessage, setUserMessage] = useState('');
     const [allMessages, setAllMessages] = useState([]);
     const [messageHistory, setMessageHistory] = useState([]);
 
@@ -22,6 +22,12 @@ const Home = () => {
             console.log(`Error sending request to API: ${error}`);
         }
     };
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSendMessage(userMessage);
+        }
+    }
 
     const scrollToBottom = () => messageEndReference.current?.scrollIntoView({ behavior: 'smooth' });
 
@@ -86,6 +92,7 @@ const Home = () => {
                         value={userMessage}
                         placeholder="Message Mart Chatbot"
                         onChange={(event) => setUserMessage(event.target.value)}
+                        onKeyDown={handleKeyPress}
                         className="w-[46rem] my-5 p-2 bg-zinc-700 outline-none border border-zinc-700 rounded-md text-zinc-100
                         transition ease-linear focus:border-zinc-100"
                     />
