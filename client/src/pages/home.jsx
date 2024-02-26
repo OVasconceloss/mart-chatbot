@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { sendMessage } from "../api/requestsAPI";
-import { useEffect, useRef, useState } from "react";
 import { MessageUser } from "../components/messages/messageUser";
 import { MessageChat } from "../components/messages/messageChat";
+import { useEffect, useRef, useState, useLayoutEffect } from "react";
 
 const Home = () => {
     const messageEndReference = useRef(null);
@@ -23,6 +23,8 @@ const Home = () => {
             setAllMessages(updatedMessages);
         } catch (error) {
             console.log(`Error sending request to API: ${error}`);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -31,23 +33,24 @@ const Home = () => {
             handleSendMessage(userMessage);
         }
     }
-
-    const scrollToBottom = () => {
-        console.log("isLoading:", isLoading);
-        console.log("messageEndReference.current:", messageEndReference.current);
-        if (!isLoading && messageEndReference.current) {
-            messageEndReference.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
     
     useEffect(() => {
         const loadingTimer = setTimeout(() => {
             setIsLoading(false);
           }, 2000);
-          scrollToBottom();
-      
-          return () => clearTimeout(loadingTimer);
+
+        return () => clearTimeout(loadingTimer);
+    }, []);
+
+    useLayoutEffect(() => {
+        scrollToBottom();
     }, [allMessages, isLoading]);
+
+    const scrollToBottom = () => {
+        if (!isLoading && messageEndReference.current) {
+            messageEndReference.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     return (
         <>
