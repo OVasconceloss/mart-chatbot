@@ -5,6 +5,7 @@ import { MessageChat } from "../components/messages/messageChat";
 import { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { HeaderSection } from "../components/section/header/headerSection";
 import DefaultProfileImage from '../assets/images/default_profile_image.png';
+import { HeaderAside } from "../components/aside/headerAside";
 
 const Home = () => {
     const messageEndReference = useRef(null);
@@ -58,9 +59,7 @@ const Home = () => {
         <>
         <main className="flex justify-between h-screen bg-zinc-800">
             <aside className="flex flex-col w-64 h-full p-5 bg-zinc-900 rounded-r-xl">
-                <div id="header-aside">
-                    <h1 className="pb-5 mb-5 text-2xl text-zinc-100 text-center">M.A.R.T</h1>
-                </div>
+                <HeaderAside />
                 <div id="content-aside" className="self-center w-60">
                     <div className="flex items-end justify-between p-2 mb-5 bg-zinc-800 rounded-md">
                         <h2 className="text-zinc-100">Chat Name Example</h2>
