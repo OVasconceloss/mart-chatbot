@@ -3,6 +3,7 @@ import { sendMessage } from "../api/requestsAPI";
 import { MessageUser } from "../components/messages/messageUser";
 import { MessageChat } from "../components/messages/messageChat";
 import { useEffect, useRef, useState, useLayoutEffect } from "react";
+import DefaultProfileImage from '../assets/images/default_profile_image.png';
 
 const Home = () => {
     const messageEndReference = useRef(null);
@@ -70,7 +71,7 @@ const Home = () => {
                 <div id="footer-aside" className="mt-auto self-center">
                     <div className="flex items-center gap-3">
                         <img 
-                            src="https://github.com/OVasconceloss.png" 
+                            src={DefaultProfileImage}
                             alt="Profile Picture"
                             className="w-10 h-10 rounded-full object-cover"
                         />
