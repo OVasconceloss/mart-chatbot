@@ -3,6 +3,7 @@ import { sendMessage } from "../api/requestsAPI";
 import { MessageUser } from "../components/messages/messageUser";
 import { MessageChat } from "../components/messages/messageChat";
 import { useEffect, useRef, useState, useLayoutEffect } from "react";
+import { HeaderSection } from "../components/section/header/headerSection";
 import DefaultProfileImage from '../assets/images/default_profile_image.png';
 
 const Home = () => {
@@ -80,18 +81,7 @@ const Home = () => {
                 </div>
             </aside>
             <section className="flex flex-col w-full h-screen p-5 bg-zinc-800">
-                <div id="header-section" className="flex items-center justify-between w-full">
-                    <h1 className="text-2xl text-zinc-100">GPT 3.5 Turbo</h1>
-                    <div>
-                        <a href="https://github.com/OVasconceloss/mart-chatbot" target="_blank">
-                            <button 
-                                className="w-20 border border-zinc-100 rounded-md text-xl text-zinc-100
-                                transition ease-linear hover:bg-zinc-100 hover:text-zinc-800">
-                                    <i className="fa-brands fa-github"></i>
-                            </button>
-                        </a>
-                    </div>
-                </div>
+                <HeaderSection />
                 <div id="messages" className="flex-grow overflow-y-auto m-10">
                     {allMessages?.map((message, index) => (
                         <div key={index}>
