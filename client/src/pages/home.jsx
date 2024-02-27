@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { HeaderSection } from "../components/section/header/headerSection";
 import DefaultProfileImage from '../assets/images/default_profile_image.png';
 import { HeaderAside } from "../components/aside/headerAside";
+import { FooterAside } from "../components/aside/footerAside";
 
 const Home = () => {
     const messageEndReference = useRef(null);
@@ -68,16 +69,7 @@ const Home = () => {
                         </button>
                     </div>
                 </div>
-                <div id="footer-aside" className="mt-auto self-center">
-                    <div className="flex items-center gap-3">
-                        <img 
-                            src={DefaultProfileImage}
-                            alt="Profile Picture"
-                            className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <p className="text-zinc-100">User Name Example</p>
-                    </div>
-                </div>
+                <FooterAside />
             </aside>
             <section className="flex flex-col w-full h-screen p-5 bg-zinc-800">
                 <HeaderSection />
