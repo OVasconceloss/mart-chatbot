@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { sendMessage } from "../api/requestsAPI";
+import { HeaderAside } from "../components/aside/headerAside";
+import { FooterAside } from "../components/aside/footerAside";
 import { MessageUser } from "../components/messages/messageUser";
 import { MessageChat } from "../components/messages/messageChat";
 import { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { HeaderSection } from "../components/section/header/headerSection";
-import DefaultProfileImage from '../assets/images/default_profile_image.png';
-import { HeaderAside } from "../components/aside/headerAside";
-import { FooterAside } from "../components/aside/footerAside";
 
 const Home = () => {
     const messageEndReference = useRef(null);
